@@ -20,6 +20,6 @@ aks_vnet_cidr_ipv4 = "10.50.0.0/16"
 aks_subnet_cidr_ipv4 = "10.50.1.0/24"
 
 #Labels
-owner_aks = "patricio.r.cerda@veeam.com"
+owner_aks = "owner@mail.com"
 activity = "demo"
 admin_password = "Veeam123!"

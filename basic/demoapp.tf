@@ -198,6 +198,16 @@ resource "helm_release" "k10app" {
   }
 }
 
+## Getting k10app LB Address
+data "kubernetes_service_v1" "k10app" {
+  provider   = kubernetes.aks01
+  depends_on = [helm_release.k10app]
+  metadata {
+    name = "router"
+    namespace = "k10app"
+  }
+}
+
 ## Demo Pacman
 
 resource "kubernetes_namespace" "pacman" {
@@ -229,4 +239,13 @@ resource "helm_release" "pacman" {
   }
 }
 
+## Getting k10app LB Address
+data "kubernetes_service_v1" "pacman" {
+  provider   = kubernetes.aks01
+  depends_on = [helm_release.pacman]
+  metadata {
+    name = "pacman"
+    namespace = "pacman"
+  }
+}
 
