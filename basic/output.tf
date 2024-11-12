@@ -19,19 +19,19 @@ output "az_bucket_name_global" {
 }
 
 output "aks01_cluster_name" {
-  value = azurerm_kubernetes_cluster.aks-cluster01.name
+  value = azurerm_kubernetes_cluster.hol-cluster01.name
 }
 output "aks02_cluster_name" {
-  value = azurerm_kubernetes_cluster.aks-cluster02.name
+  value = azurerm_kubernetes_cluster.hol-cluster02.name
 }
 
 output "kubeconfig_aks01" {
   description = "Configure kubeconfig to access this cluster"
-  value       = "az aks get-credentials --resource-group ${azurerm_resource_group.demo_rgroup01.name} --name ${azurerm_kubernetes_cluster.aks-cluster01.name} --context k10-aks-primary"
+  value       = "az aks get-credentials --resource-group ${azurerm_resource_group.demo_rgroup01.name} --name ${azurerm_kubernetes_cluster.hol-cluster01.name} --context k10-hol-primary"
 }
 output "kubeconfig_aks02" {
   description = "Configure kubeconfig to access this cluster"
-  value       = "az aks get-credentials --resource-group ${azurerm_resource_group.demo_rgroup02.name} --name ${azurerm_kubernetes_cluster.aks-cluster02.name} --context k10-aks-secondary"
+  value       = "az aks get-credentials --resource-group ${azurerm_resource_group.demo_rgroup02.name} --name ${azurerm_kubernetes_cluster.hol-cluster02.name} --context k10-hol-secondary"
 }
 
 output "aks01_k10url" {
@@ -57,11 +57,11 @@ output "az_bucket_key_global" {
 }
 
 output "kube_config_pass_01" {
-  value     = azurerm_kubernetes_cluster.aks-cluster01.kube_config[0]
+  value     = azurerm_kubernetes_cluster.hol-cluster01.kube_config[0]
   sensitive = true
 }
 
 output "kube_config_pass_02" {
-  value     = azurerm_kubernetes_cluster.aks-cluster02.kube_config[0]
+  value     = azurerm_kubernetes_cluster.hol-cluster02.kube_config[0]
   sensitive = true
 }

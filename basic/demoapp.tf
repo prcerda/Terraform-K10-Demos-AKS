@@ -1,8 +1,8 @@
 ## Demo Stock app
 
 resource "kubernetes_namespace" "stock" {
-  provider   = kubernetes.aks01
-  depends_on = [azurerm_kubernetes_cluster.aks-cluster01,helm_release.az-volumesnapclass01]
+  provider   = kubernetes.aks02
+  depends_on = [azurerm_kubernetes_cluster.hol-cluster02,helm_release.az-volumesnapclass02]
 
   metadata {
     name = "stock"
@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "stock" {
 }
 
 resource "helm_release" "stockgres" {
-  provider   = helm.aks01
+  provider   = helm.aks02
   depends_on = [kubernetes_namespace.stock]
 
   name = "stockdb"
@@ -40,7 +40,7 @@ resource "helm_release" "stockgres" {
 }
 
 resource "kubernetes_config_map" "stockcm" {
-  provider   = kubernetes.aks01
+  provider   = kubernetes.aks02
   depends_on = [kubernetes_namespace.stock]
 
   metadata {
@@ -54,7 +54,7 @@ resource "kubernetes_config_map" "stockcm" {
 }
 
 resource "kubernetes_deployment" "stock-deploy" {
-  provider   = kubernetes.aks01
+  provider   = kubernetes.aks02
   depends_on = [kubernetes_namespace.stock]
 
   metadata {
@@ -140,7 +140,7 @@ resource "kubernetes_deployment" "stock-deploy" {
 
 
 resource "kubernetes_service_v1" "stock-demo-svc" {
-  provider   = kubernetes.aks01
+  provider   = kubernetes.aks02
   depends_on = [kubernetes_namespace.stock]
 
   metadata {
@@ -171,7 +171,7 @@ resource "kubernetes_service_v1" "stock-demo-svc" {
 
 resource "kubernetes_namespace" "k10app" {
   provider   = kubernetes.aks01
-  depends_on = [azurerm_kubernetes_cluster.aks-cluster01,helm_release.az-volumesnapclass01]
+  depends_on = [azurerm_kubernetes_cluster.hol-cluster01,helm_release.az-volumesnapclass01]
 
   metadata {
     name = "k10app"
@@ -211,8 +211,8 @@ data "kubernetes_service_v1" "k10app" {
 ## Demo Pacman
 
 resource "kubernetes_namespace" "pacman" {
-  provider   = kubernetes.aks01
-  depends_on = [azurerm_kubernetes_cluster.aks-cluster01,helm_release.az-volumesnapclass01]
+  provider   = kubernetes.aks02
+  depends_on = [azurerm_kubernetes_cluster.hol-cluster02,helm_release.az-volumesnapclass02]
 
   metadata {
     name = "pacman"
@@ -223,7 +223,7 @@ resource "kubernetes_namespace" "pacman" {
 }
 
 resource "helm_release" "pacman" {
-  provider   = helm.aks01
+  provider   = helm.aks02
   depends_on = [kubernetes_namespace.pacman]
 
   name = "pacman"
@@ -241,7 +241,7 @@ resource "helm_release" "pacman" {
 
 ## Getting k10app LB Address
 data "kubernetes_service_v1" "pacman" {
-  provider   = kubernetes.aks01
+  provider   = kubernetes.aks02
   depends_on = [helm_release.pacman]
   metadata {
     name = "pacman"

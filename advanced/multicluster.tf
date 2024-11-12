@@ -27,7 +27,7 @@ resource "kubernetes_manifest" "bootstrap_kasten_io_mc" {
             "namespace" = "kasten-io"
             "releaseName" = "k10"
           }
-          "name" = "k10-aks-primary"
+          "name" = "k10-hol-primary"
           "primary" = true
         }
       }
@@ -67,7 +67,7 @@ resource "kubernetes_config_map" "kasten-mc-secondary" {
     namespace = "kasten-io"
   }
   data = {
-    cluster-name    = "k10-aks-secondary"
+    cluster-name    = "k10-hol-secondary"
     cluster-ingress = "${data.terraform_remote_state.aks01.outputs.aks02_k10url}"
     primary-ingress = "${data.terraform_remote_state.aks01.outputs.aks01_k10url}"
     allow-insecure-primary-ingress = true

@@ -10,8 +10,8 @@ cluster_name01 = "k10mc1"
 region02            = "westeurope"
 cluster_name02      = "k10mc2"
 
-aks_instance_type = "Standard_DS2_v2"
-aks_num_nodes = 3
+aks_instance_type = "Standard_D4s_v3"
+aks_num_nodes = 2
 
 # CIDR block for the new VNET where the appliance will be deployed.
 aks_vnet_cidr_ipv4 = "10.50.0.0/16"
@@ -20,6 +20,6 @@ aks_vnet_cidr_ipv4 = "10.50.0.0/16"
 aks_subnet_cidr_ipv4 = "10.50.1.0/24"
 
 #Labels
-owner_aks = "owner@mail.com"
+owner_aks = "owner@veeam.com"
 activity = "demo"
 admin_password = "Veeam123!"

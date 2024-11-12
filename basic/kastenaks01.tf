@@ -1,7 +1,7 @@
 ## Kasten namespace
 resource "kubernetes_namespace" "kastenio_aks01" {
   provider   = kubernetes.aks01
-  depends_on = [azurerm_kubernetes_cluster.aks-cluster01,helm_release.az-volumesnapclass01]
+  depends_on = [azurerm_kubernetes_cluster.hol-cluster01,helm_release.az-volumesnapclass01]
   metadata {
     name = "kasten-io"
   }

@@ -32,9 +32,9 @@ resource "azurerm_subnet" "subnet-k10-demo02" {
 ## Private Link
 
 # Create User Assigned Identity
-resource "azurerm_user_assigned_identity" "aks-demo-id02" {
+resource "azurerm_user_assigned_identity" "hol-demo-id02" {
   location            = azurerm_resource_group.demo_rgroup02.location
-  name                = "aks-id-${var.cluster_name02}-${local.saString}"
+  name                = "hol-id-${var.cluster_name02}-${local.saString}"
   resource_group_name = azurerm_resource_group.demo_rgroup02.name
   tags = {
     owner = var.owner_aks
@@ -44,8 +44,8 @@ resource "azurerm_user_assigned_identity" "aks-demo-id02" {
 
 ## Create AKS Cluster
 
-resource "azurerm_kubernetes_cluster" "aks-cluster02" {
-  name                = "aks-${var.cluster_name02}-${local.saString}"
+resource "azurerm_kubernetes_cluster" "hol-cluster02" {
+  name                = "hol-${var.cluster_name02}-${local.saString}"
   location            = azurerm_resource_group.demo_rgroup02.location
   resource_group_name = azurerm_resource_group.demo_rgroup02.name
   dns_prefix          = "dns-${var.cluster_name02}-${local.saString}"
@@ -69,7 +69,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster02" {
 # Storage Class Region 2
 resource "kubernetes_storage_class" "storage_class_02" {
 provider   = kubernetes.aks02
-depends_on = [azurerm_kubernetes_cluster.aks-cluster02]
+depends_on = [azurerm_kubernetes_cluster.hol-cluster02]
   metadata {
     name = "aks02-storage-class"
     annotations = {
