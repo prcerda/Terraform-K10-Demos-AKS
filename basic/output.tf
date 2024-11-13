@@ -1,8 +1,3 @@
-output "demoapp_url" {
-  description = "Demo App URL"
-  value = "http://${kubernetes_service_v1.stock-demo-svc.status.0.load_balancer.0.ingress.0.ip}"
-}
-
 output "pacman_url" {
   description = "Pacman URL"
   value = "http://${data.kubernetes_service_v1.pacman.status.0.load_balancer.0.ingress.0.ip}"  

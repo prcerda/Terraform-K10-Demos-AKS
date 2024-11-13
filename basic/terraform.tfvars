@@ -10,8 +10,8 @@ cluster_name01 = "k10mc1"
 region02            = "westeurope"
 cluster_name02      = "k10mc2"
 
-aks_instance_type = "Standard_D4s_v3"
-aks_num_nodes = 2
+aks_instance_type = "Standard_B4ms"
+aks_num_nodes = 3
 
 # CIDR block for the new VNET where the appliance will be deployed.
 aks_vnet_cidr_ipv4 = "10.50.0.0/16"
