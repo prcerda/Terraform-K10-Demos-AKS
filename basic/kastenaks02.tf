@@ -76,6 +76,10 @@ resource "helm_release" "az-blob-locprofile02" {
     value = azurerm_storage_account.repository02.name
   }
   set {
+    name  = "K10Location.clustername"
+    value = var.cluster_name02
+  }  
+  set {
     name  = "K10Location.azure_storage_env"
     value = "AzureCloud"
   }
@@ -97,6 +101,10 @@ resource "helm_release" "az-blob-locprofile01b" {
     name  = "K10Location.bucketname"
     value = azurerm_storage_account.repository01.name
   }
+  set {
+    name  = "K10Location.clustername"
+    value = var.cluster_name01
+  }  
   set {
     name  = "K10Location.azure_storage_env"
     value = "AzureCloud"
@@ -120,10 +128,9 @@ resource "helm_release" "k10-config-aks02" {
     name  = "bucketname"
     value = azurerm_storage_account.repository02.name
   }
-
   set {
-    name  = "buckettype"
-    value = "azblob"
+    name  = "clustername"
+    value = var.cluster_name02
   }
 }
 
