@@ -5,6 +5,7 @@ resource "azurerm_storage_account" "repository01" {
   location                    = var.region01
   account_tier                = "Standard"
   account_replication_type    = "LRS"
+  allow_nested_items_to_be_public = false  
   tags = {
     owner = var.owner_aks
     activity = var.activity
@@ -25,6 +26,7 @@ resource "azurerm_storage_account" "repository02" {
   location                    = var.region02
   account_tier                = "Standard"
   account_replication_type    = "LRS"
+  allow_nested_items_to_be_public = false  
   tags = {
     owner = var.owner_aks
     activity = var.activity
@@ -45,6 +47,7 @@ resource "azurerm_storage_account" "repository_global" {
   location                    = var.region01
   account_tier                = "Standard"
   account_replication_type    = "LRS"
+  allow_nested_items_to_be_public = false  
   tags = {
     owner = var.owner_aks
     activity = var.activity

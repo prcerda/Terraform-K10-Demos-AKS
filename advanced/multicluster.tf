@@ -97,6 +97,11 @@ resource "kubernetes_manifest" "k10clusterrolebinding_mc" {
           "kind" = "User"
           "name" = "system:serviceaccount:kasten-io:k10-k10"
         },
+        {
+          "apiGroup" = "rbac.authorization.k8s.io"
+          "kind" = "User"
+          "name" = "system:serviceaccount:kasten-io:auth-svc"
+        },        
       ]
     }
   }
