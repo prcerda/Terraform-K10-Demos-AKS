@@ -3,11 +3,6 @@ output "pacman_url" {
   value = "http://${data.kubernetes_service_v1.pacman.status.0.load_balancer.0.ingress.0.ip}"  
 }
 
-output "k10app_url" {
-  description = "K10App URL"
-  value = "http://${data.kubernetes_service_v1.k10app.status.0.load_balancer.0.ingress.0.ip}"  
-}
-
 output "az_bucket_name_global" {
   description = "Azure Storage Account name - Global"
   value = azurerm_storage_account.repository_global.name
