@@ -30,7 +30,7 @@ terraform {
 provider "htpasswd" {
 }
 
-resource "htpasswd_password" "hash" {
+resource "htpasswd_password" "k10_admin_password" {
   password = var.admin_password
 }
 

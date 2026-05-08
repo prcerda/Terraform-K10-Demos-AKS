@@ -49,6 +49,7 @@ resource "kubernetes_secret" "join_token_secret" {
 
 ## Kasten K10 - Multicluster Use Join Token - Secondary
 resource "kubernetes_secret" "join_token_aks" {
+  depends_on = [kubernetes_secret.join_token_secret]
   provider   = kubernetes.aks02
   metadata {
     name = "mc-join"
@@ -92,6 +93,11 @@ resource "kubernetes_manifest" "k10clusterrolebinding_mc" {
       ]
       "k10ClusterRole" = "k10-multi-cluster-admin"
       "subjects" = [
+        {
+          "apiGroup" = "rbac.authorization.k8s.io"
+          "kind" = "User"
+          "name" = "system:serviceaccount:kasten-io:dashboardbff-svc"
+        },        
         {
           "apiGroup" = "rbac.authorization.k8s.io"
           "kind" = "User"

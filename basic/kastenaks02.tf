@@ -7,6 +7,19 @@ resource "kubernetes_namespace" "kastenio_aks02" {
   }
 }
 
+resource "kubernetes_secret" "kasten_auth_aks02" {
+  provider   = kubernetes.aks02
+  depends_on = [kubernetes_namespace.kastenio_aks02]  
+  metadata {
+    name      = "k10-auth"
+    namespace = kubernetes_namespace.kastenio_aks02.metadata[0].name
+  }
+  data = {
+    "htpasswd" = "admin:${htpasswd_password.k10_admin_password.apr1}"
+  }
+  type = "Opaque"
+}
+
 ## Kasten Helm
 resource "helm_release" "k10_aks02" {
   provider   = helm.aks02
@@ -15,26 +28,30 @@ resource "helm_release" "k10_aks02" {
   namespace = kubernetes_namespace.kastenio_aks02.metadata.0.name
   repository = "https://charts.kasten.io/"
   chart      = "k10"
-  
+  set {
+    name  = "eulaAgreed"
+    value = "true"
+  }
+  set {
+    name  = "auth.method"
+    value = "basic"
+  }
   set {
     name  = "externalGateway.create"
-    value = true
+    value = "true"
   }
-
   set {
     name  = "azure.useDefaultMSI"
-    value = true
+    value = "true"
   } 
-
   set {
     name  = "auth.basicAuth.enabled"
-    value = true
+    value = "true"
   } 
-
   set {
-    name  = "auth.basicAuth.htpasswd"
-    value = "admin:${htpasswd_password.hash.apr1}"
-  } 
+    name  = "auth.basicAuth.secretName"
+    value = kubernetes_secret.kasten_auth_aks02.metadata[0].name
+  }
 }
 
 ## Getting Kasten LB Address

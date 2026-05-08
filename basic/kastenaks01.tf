@@ -7,6 +7,19 @@ resource "kubernetes_namespace" "kastenio_aks01" {
   }
 }
 
+resource "kubernetes_secret" "kasten_auth_aks01" {
+  provider   = kubernetes.aks01
+  depends_on = [kubernetes_namespace.kastenio_aks01]  
+  metadata {
+    name      = "k10-auth"
+    namespace = kubernetes_namespace.kastenio_aks01.metadata[0].name
+  }
+  data = {
+    "htpasswd" = "admin:${htpasswd_password.k10_admin_password.apr1}"
+  }
+  type = "Opaque"
+}
+
 ## Kasten Helm
 resource "helm_release" "k10_aks01" {
   provider   = helm.aks01
@@ -14,28 +27,33 @@ resource "helm_release" "k10_aks01" {
   name = "k10"
   namespace = kubernetes_namespace.kastenio_aks01.metadata.0.name
   repository = "https://charts.kasten.io/"
-  chart      = "k10"
-  
+  chart      = "k10"  
+  set {
+    name  = "eulaAgreed"
+    value = "true"
+  }
+  set {
+    name  = "auth.method"
+    value = "basic"
+  }
   set {
     name  = "externalGateway.create"
-    value = true
+    value = "true"
   }
-
   set {
     name  = "azure.useDefaultMSI"
-    value = true
+    value = "true"
   } 
-
   set {
     name  = "auth.basicAuth.enabled"
-    value = true
+    value = "true"
   } 
-
   set {
-    name  = "auth.basicAuth.htpasswd"
-    value = "admin:${htpasswd_password.hash.apr1}"
-  } 
+    name  = "auth.basicAuth.secretName"
+    value = kubernetes_secret.kasten_auth_aks01.metadata[0].name
+  }
 }
+
 
 ## Getting Kasten LB Address
 data "kubernetes_service_v1" "gateway-ext_aks01" {
