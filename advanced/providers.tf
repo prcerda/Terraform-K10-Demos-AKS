@@ -6,18 +6,22 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.4"   
     }
+    time = {
+      source  = "hashicorp/time"
+      version = ">= 0.9"
+    }
   }
 }
-
-
+ 
+ 
 data "terraform_remote_state" "aks01" {
   backend = "local"
-
+ 
   config = {
     path = "../basic/terraform.tfstate"
   }
 }
-
+ 
 # Configure the Azure provider 01
 provider "kubernetes" {
   alias = "aks01"
@@ -26,7 +30,7 @@ provider "kubernetes" {
     client_key             = base64decode(data.terraform_remote_state.aks01.outputs.kube_config_pass_01.client_key)
     cluster_ca_certificate = base64decode(data.terraform_remote_state.aks01.outputs.kube_config_pass_01.cluster_ca_certificate)
 }
-
+ 
 # Configure the Azure provider 02
 provider "kubernetes" {
   alias = "aks02"
@@ -35,7 +39,3 @@ provider "kubernetes" {
     client_key             = base64decode(data.terraform_remote_state.aks01.outputs.kube_config_pass_02.client_key)
     cluster_ca_certificate = base64decode(data.terraform_remote_state.aks01.outputs.kube_config_pass_02.cluster_ca_certificate)
 }
-
-
-
-

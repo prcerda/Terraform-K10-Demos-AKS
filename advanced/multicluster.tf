@@ -44,19 +44,40 @@ resource "kubernetes_secret" "join_token_secret" {
     namespace = "kasten-io-mc"
   }
   type = "dist.kio.kasten.io/join-token"
+
+  # Kasten fills the "token" key after the secret is created; ignore it
+  # so Terraform doesn't try to remove it on the next apply.
+  lifecycle {
+    ignore_changes = [data]
+  }
+}
+
+## Give the Kasten controller time to populate the token
+resource "time_sleep" "wait_join_token" {
+  depends_on      = [kubernetes_secret.join_token_secret]
+  create_duration = "30s"
+}
+
+## Read the secret back once the token has been generated
+data "kubernetes_secret" "join_token_secret" {
+  provider   = kubernetes.aks01
+  depends_on = [time_sleep.wait_join_token]
+  metadata {
+    name      = kubernetes_secret.join_token_secret.metadata[0].name
+    namespace = "kasten-io-mc"
+  }
 }
 
 
 ## Kasten K10 - Multicluster Use Join Token - Secondary
 resource "kubernetes_secret" "join_token_aks" {
-  depends_on = [kubernetes_secret.join_token_secret]
   provider   = kubernetes.aks02
   metadata {
     name = "mc-join"
     namespace = "kasten-io"
   }
   data = {
-    token = kubernetes_secret.join_token_secret.data.token
+    token = data.kubernetes_secret.join_token_secret.data["token"]
   }  
 }
 
